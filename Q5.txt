@@ -1,0 +1,64 @@
+-- Convex Hull
+
+CREATE TABLE mapAll(id VARCHAR (50) PRIMARY KEY,
+              points geometry);
+Insert into mapAll (id,points) VALUES ('Leavey Library',ST_GeomFromText('POINT(-118.2827689 34.0217420)', 4326));
+Insert into mapAll (id,points) VALUES ('VKC Library',ST_GeomFromText('POINT(-118.2839916 34.0213082)', 4326));
+Insert into mapAll (id,points) VALUES ('Doheny Library',ST_GeomFromText('POINT(-118.2837415 34.0200619)', 4326));
+Insert into mapAll (id,points) VALUES ('SAL Library',ST_GeomFromText('POINT(-118.2887861 34.0196375)', 4326));
+Insert into mapAll (id,points) VALUES ('Cinematic Lib',ST_GeomFromText('POINT(-118.2835437 34.0200877)', 4326));
+
+Insert into mapAll (id,points) VALUES ('LawSchool Cafe',ST_GeomFromText('POINT(-118.2843970 34.0187205)', 4326));
+Insert into mapAll (id,points) VALUES ('Lemonade',ST_GeomFromText('POINT(-118.2861317 34.0205865)', 4326));
+Insert into mapAll (id,points) VALUES ('Tutor Hall Cafe',ST_GeomFromText('POINT(-118.2899542 34.0201097)', 4326));
+Insert into mapAll (id,points) VALUES ('Little Galen',ST_GeomFromText('POINT(-118.2870091 34.0230094)', 4326));
+Insert into mapAll (id,points) VALUES ('Cammereli Cafe',ST_GeomFromText('POINT(-118.2838713 34.0191732)', 4326));
+
+Insert into mapAll (id,points) VALUES ('Alumni Park',ST_GeomFromText('POINT(-118.2846364 34.0204365)', 4326));
+Insert into mapAll (id,points) VALUES ('Epstein Plaza',ST_GeomFromText('POINT(-118.2889309 34.0204092)', 4326));
+Insert into mapAll (id,points) VALUES ('EFHutton Park',ST_GeomFromText('POINT(-118.2855389 34.0209228)', 4326));
+Insert into mapAll (id,points) VALUES ('McCarthy Quad',ST_GeomFromText('POINT(-118.2831534 34.0209472)', 4326));
+Insert into mapAll (id,points) VALUES ('Founders Park',ST_GeomFromText('POINT(-118.2849820 34.0214922)', 4326));
+
+-- Query
+
+SELECT ST_AsText(ST_ConvexHull(
+	ST_Collect(ST_GeomFromText('MULTIPOINT(-118.2827689 34.0217420, -118.2839916 34.0213082, -118.2837415 34.0200619, -118.2887861 34.0196375,-118.2835437 34.0200877
+	, -118.2843970 34.0187205,-118.2861317 34.0205865,-118.2899542 34.0201097,-118.2870091 34.0230094,-118.2838713 34.0191732,-118.2846364 34.0204365,-118.2889309 34.0204092,
+	-118.2855389 34.0209228,-118.2831534 34.0209472,-118.2849820 34.0214922)')
+			)) );
+
+-- KNN
+
+		
+create table knn4(
+name varchar(30)
+);
+
+
+select AddGeometryColumn('knn4','points_geom',4326, 'POINT', 2); 
+
+Insert into knn4(name, points_geom) VALUES ('Leavey Library',ST_GeomFromText('POINT(-118.2827689 34.0217420)', 4326));
+Insert into knn4(name, points_geom) VALUES ('VKC Library',ST_GeomFromText('POINT(-118.2839916 34.0213082)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Doheny Library',ST_GeomFromText('POINT(-118.2837415 34.0200619)', 4326));
+Insert into knn4(name, points_geom) VALUES ('SAL Library',ST_GeomFromText('POINT(-118.2887861 34.0196375)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Cinematic Lib',ST_GeomFromText('POINT(-118.2835437 34.0200877)', 4326));
+
+Insert into knn4(name, points_geom) VALUES ('LawSchool Cafe',ST_GeomFromText('POINT(-118.2843970 34.0187205)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Lemonade',ST_GeomFromText('POINT(-118.2861317 34.0205865)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Tutor Hall Cafe',ST_GeomFromText('POINT(-118.2899542 34.0201097)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Little Galen',ST_GeomFromText('POINT(-118.2870091 34.0230094)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Cammereli Cafe',ST_GeomFromText('POINT(-118.2838713 34.0191732)', 4326));
+
+Insert into knn4(name, points_geom) VALUES ('Alumni Park',ST_GeomFromText('POINT(-118.2846364 34.0204365)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Epstein Plaza',ST_GeomFromText('POINT(-118.2889309 34.0204092)', 4326));
+Insert into knn4(name, points_geom) VALUES ('McCarthy Quad',ST_GeomFromText('POINT(-118.2831534 34.0209472)', 4326));
+Insert into knn4(name, points_geom) VALUES ('Founders Park',ST_GeomFromText('POINT(-118.2849820 34.0214922)', 4326));
+
+
+-- Query
+
+SELECT *
+FROM knn4
+ORDER BY knn4.points_geom <-> ST_GeomFromText('POINT(-118.2855389 34.0209228)', 4326)
+LIMIT 4;
